@@ -34,7 +34,7 @@ function preload()
   eat.playing = true;
   sad.playing = true;
   sad.looping= false;
-  eat.looping = false; 
+  eat.looping                            = false; 
 }
 
 function setup() {
@@ -76,15 +76,28 @@ function setup() {
 
 function draw() 
 {
+
   background(51);
   image(bg_img,width/2,height/2,490,690);
 
+
+if (fruit != null){
   image(food,fruit.position.x,fruit.position.y,70,70);
+}
 
   rope.show();
   Engine.update(engine);
   ground.show();
+if(collide(fruit,bunny)==true)
+{
+  bunny.changeAnimation('eating');
 
+}
+if(collide(fruit,ground.body)==true)
+{
+  bunny.changeAnimation('crying');
+
+}
    drawSprites();
 }
 
@@ -94,4 +107,19 @@ function drop()
   fruit_con.detach();
   fruit_con = null; 
 }
-
+function collide (body,sprite) 
+{
+  if (body!=null)
+  {
+    var d= dist(body.positon.x,body.position.y,sprite.posyion.x,sprite.position.y);
+    if ( d<=80 )
+    {
+      World.remove(engine.world,fruit);
+      fruit = null
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+}
